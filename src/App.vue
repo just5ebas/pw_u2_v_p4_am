@@ -1,17 +1,16 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <deberAPI/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import deberAPI from "./components/deberAPI.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    deberAPI,
+  },
+};
 </script>
 
 <style>
