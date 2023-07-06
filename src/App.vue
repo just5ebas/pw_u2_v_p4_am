@@ -1,14 +1,14 @@
 <template>
-  <deberAPI/>
+  <PokemonPage />
 </template>
 
 <script>
-import deberAPI from "./components/deberAPI.vue";
+import PokemonPage from "./modules/pokemon/page/PokemonPage.vue";
 
 export default {
   name: "App",
   components: {
-    deberAPI,
+    PokemonPage,
   },
 };
 </script>
@@ -19,7 +19,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: black;
   margin-top: 60px;
 }
 </style>
