@@ -31,7 +31,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .oculta-pokemon {
   filter: brightness(0);
 }

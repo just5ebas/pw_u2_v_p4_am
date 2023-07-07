@@ -1,29 +1,66 @@
 <template>
-  <h1 v-if="!pokemonCorrecto">Espere por favor...</h1>
-  <div v-else>
-    <h1>Juego Pokémon</h1>
-    <h2>Puntaje: {{ puntaje }}</h2>
-    <h3 v-if="!(gano || perdio)">Tienes {{ intentos }} intentos</h3>
-    <PokemonImg :pokemonId="pokemonCorrecto.id" :muestraPokemon="showPokemon" />
-
-    <div v-if="!(gano || perdio)">
-      <PokemonOps
-        :opciones="arreglo"
-        v-on:seleccionado="revisarSeleccion($event)"
+  <div v-if="rondas > 0">
+    <div v-if="!pokemonCorrecto">
+      <h1>Espere por favor...</h1>
+      <h3>Estamos obteniendo los pokemons</h3>
+    </div>
+    <div v-else>
+      <h1>¿Quién es ese Pokemon?</h1>
+      <h2>Puntaje: {{ puntaje }}</h2>
+      <h3>Rondas: {{ rondas }}</h3>
+      <h3 v-if="!(gano || perdio)">Tienes {{ intentos }} intentos</h3>
+      <PokemonImg
+        :pokemonId="pokemonCorrecto.id"
+        :muestraPokemon="showPokemon"
       />
+
+      <div v-if="!(gano || perdio)">
+        <PokemonOps
+          :opciones="arreglo"
+          v-on:seleccionado="revisarSeleccion($event)"
+        />
+      </div>
+    </div>
+
+    <div v-if="gano" class="mensaje_ganador">
+      <h1>{{ pokemonCorrecto.nombre }}</h1>
+      <h1>GANASTE</h1>
+      <h2>Has obtenido {{ puntosObt }} punto(s)</h2>
+      <button @click="reiniciar">Jugar de nuevo</button>
+    </div>
+    <div v-if="perdio" class="mensaje_perdedor">
+      <h1>PERDISTE</h1>
+      <h2>La opcion correcta era {{ pokemonCorrecto.nombre }}</h2>
+      <button @click="reiniciar">Jugar de nuevo</button>
     </div>
   </div>
+  <div v-else>
+    <br />
+    <PokemonImg :pokemonId="pokemonCorrecto.id" :muestraPokemon="showPokemon" />
 
-  <div v-if="gano" class="mensaje_ganador">
-    <h1>{{ pokemonCorrecto.nombre }}</h1>
-    <h1>GANASTE</h1>
-    <h2>Has obtenido {{ puntosObt }} punto(s)</h2>
-    <button @click="reiniciar">Jugar de nuevo</button>
-  </div>
-  <div v-if="perdio" class="mensaje_perdedor">
-    <h1>PERDISTE</h1>
-    <h2>La opcion correcta era {{ pokemonCorrecto.nombre }}</h2>
-    <button @click="reiniciar">Jugar de nuevo</button>
+    <div v-if="gano" class="mensaje_ganador">
+      <h1>{{ pokemonCorrecto.nombre }}</h1>
+      <h1>GANASTE</h1>
+    </div>
+    <div v-if="perdio" class="mensaje_perdedor">
+      <h1>PERDISTE</h1>
+      <h2>La opcion correcta era {{ pokemonCorrecto.nombre }}</h2>
+    </div>
+
+    <br />
+
+    <div v-if="puntaje >= 10" class="mensaje_ganador">
+      <h1>Ya no tienes mas rondas</h1>
+      <h2>Tu puntaje total es de {{ puntaje }} puntos</h2>
+      <h2>
+        Puedes ir a ver la pestaña "Premios" para saber como ganar alguno.
+      </h2>
+    </div>
+    <div v-if="puntaje < 10" class="mensaje_perdedor">
+      <h1>Se acabaron tus rondas</h1>
+      <h2>No alcanzaste el puntaje requerido</h2>
+      <h2>Tus puntos: {{ puntaje }}</h2>
+    </div>
   </div>
 </template>
 
@@ -43,6 +80,7 @@ export default {
       puntosObt: 0,
       gano: false,
       perdio: false,
+      rondas: 5,
     };
   },
 
@@ -63,6 +101,7 @@ export default {
       if (this.pokemonCorrecto.id == idSeleccionado) {
         this.gano = true;
         this.showPokemon = true;
+        this.rondas--;
       }
       this.intentos--;
     },
@@ -82,6 +121,7 @@ export default {
       if (this.intentos == 0 && !this.gano) {
         this.perdio = true;
         this.showPokemon = true;
+        this.rondas--;
       } else if (this.intentos == 2 && this.gano) {
         this.puntaje += 5;
         this.puntosObt = 5;
@@ -120,5 +160,9 @@ button:hover {
   background: #f9e900;
   color: #0a1045;
   border: 2px outset #00c2d1;
+}
+html,
+body {
+  background-color: #d4a628;
 }
 </style>
